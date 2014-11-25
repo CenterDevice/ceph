@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = gnu
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = autogen.sh ceph.spec.in ceph.spec
+EXTRA_DIST = autogen.sh ceph.spec.in ceph.spec install-deps.sh
 # the "." here makes sure check-local builds gtest before it is used
 SUBDIRS = . src man
 
@@ -31,7 +31,7 @@ if WITH_DEBUG
 	@cd src/gtest && $(MAKE) $(AM_MAKEFLAGS) lib/libgtest.a lib/libgtest_main.a
 endif
 
-check-local:
+check-local: all
 #	We build gtest this way, instead of using SUBDIRS, because with that,
 #	gtest's own tests would be run and that would slow us down.
 	@cd src/gtest && $(MAKE) $(AM_MAKEFLAGS) lib/libgtest.a lib/libgtest_main.a
@@ -48,3 +48,22 @@ clean-local:
 	fi
 
 	@rm -rf src/test/virtualenv
+
+
+# NOTE: This only works when enough dependencies are installed for
+# autoconf to be happy.  These commands should be run manually to
+# bootstrap.
+install-deps:
+	./install-deps.sh
+
+dist-hook:
+#	Generates the full list of contributors
+	if test -d $(srcdir)/.git; then \
+	  cd $(srcdir); \
+	  git log --format='%aN <%aE>' | sort -u >$(distdir)/AUTHORS; \
+	fi
+#	Generates ChangeLog from git
+	if test -d $(srcdir)/.git; then \
+	  cd $(srcdir); \
+	  git log --oneline --decorate --no-merges > $(distdir)/ChangeLog; \
+	fi
