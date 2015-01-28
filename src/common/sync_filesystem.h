@@ -31,20 +31,26 @@ inline int sync_filesystem(int fd)
    * performs a sync on only one filesystem. If we don't have this call, we
    * have to fall back on sync(), which synchronizes every filesystem on the
    * computer. */
+  int r;
 #ifdef HAVE_SYS_SYNCFS
-  if (syncfs(fd) == 0)
+  r = syncfs(fd);
+  if (r == 0)
     return 0;
-  else
+  if (errno != ENOSYS)
     return -errno;
-#elif defined(SYS_syncfs)
-  if (syscall(SYS_syncfs, fd) == 0)
+#endif
+#if defined(SYS_syncfs)
+  r = syscall(SYS_syncfs, fd);
+  if (r == 0)
     return 0;
-  else
+  if (errno != ENOSYS)
     return -errno;
-#elif defined(__NR_syncfs)
-  if (syscall(__NR_syncfs, fd) == 0)
+#endif
+#if defined(__NR_syncfs)
+  r = syscall(__NR_syncfs, fd);
+  if (r == 0)
     return 0;
-  else
+  if (errno != ENOSYS)
     return -errno;
 #endif
 
