@@ -1,3 +1,9 @@
+ceph (0.80.8-1-cd) stable; urgency=low
+
+  * 0.80.8-1 with fix for #10292
+
+ -- Daniel Schneller <daniel.schneller@centerdevice.com>  Thu, 29 Jan 2015 15:02:00 +0100
+
 ceph (0.80.8-1) stable; urgency=low
 
   * New upstream release
