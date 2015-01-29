@@ -30,10 +30,10 @@ Requires:	python-argparse
 Requires:	python-requests
 Requires:	python-flask
 Requires:	xfsprogs
-Requires:	cryptsetup
 Requires:	parted
 Requires:	util-linux
 Requires:	hdparm
+Requires:	cryptsetup
 Requires(post):	binutils
 BuildRequires:	make
 BuildRequires:	gcc-c++
@@ -58,6 +58,13 @@ BuildRequires:	leveldb-devel > 1.2
 BuildRequires:	xfsprogs-devel
 BuildRequires:	xmlstarlet
 BuildRequires:	yasm
+BuildRequires:	python-requests
+BuildRequires:	python-flask
+BuildRequires:	xfsprogs
+BuildRequires:	parted
+BuildRequires:	util-linux
+BuildRequires:	hdparm
+BuildRequires:	cryptsetup
 %if 0%{?rhel} || 0%{?centos} || 0%{?fedora}
 BuildRequires:	snappy-devel
 %endif
